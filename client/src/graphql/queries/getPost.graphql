@@ -1,0 +1,5 @@
+query GetPost($id: String!){
+    getPost(id: $id){
+        ...postInfo
+    }
+}

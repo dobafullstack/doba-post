@@ -1,0 +1,43 @@
+.loading {
+    width: 10px;
+    height: 25px;
+    background-color: #7c74e8;
+    border-radius: 8px;
+}
+
+.loading-5 {
+    animation: loading 1s infinite alternate;
+}
+
+.loading-4 {
+    animation: loading2 1s infinite alternate;
+    height: 50px;
+}
+.loading-3 {
+    animation: loading 1s infinite alternate;
+}
+.loading-2 {
+    animation: loading2 1s infinite alternate;
+    height: 50px;
+}
+.loading-1 {
+    animation: loading 1s infinite alternate;
+}
+
+@keyframes loading {
+    from {
+        height: 25px;
+    }
+    to {
+        height: 50px;
+    }
+}
+
+@keyframes loading2 {
+    from {
+        height: 50px;
+    }
+    to {
+        height: 25px;
+    }
+}

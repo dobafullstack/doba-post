@@ -1,0 +1,5 @@
+mutation deletePost($id: String!){
+    deletePost(id: $id){
+    ...postMutationResponse
+  }
+}
