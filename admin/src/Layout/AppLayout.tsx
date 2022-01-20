@@ -23,9 +23,9 @@ export default function AppLayout({ children }: Props): ReactElement {
         return (
             <>
                 <Navbar />
-                <Flex minH="calc(100vh - 5rem)">
+                <Flex minH="calc(100vh - 5rem)" gap={5}>
                     <Sidebar />
-                    <Box pt={10} px={10} flexGrow={1} bg="gray.50">
+                    <Box pt={10} px={10} flexGrow={1} bg="gray.50" mt={2}>
                         {children}
                     </Box>
                 </Flex>

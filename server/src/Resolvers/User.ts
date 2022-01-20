@@ -1,13 +1,22 @@
 import lodash from "lodash";
 import md5 from "md5";
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import { v4 as uuidV4 } from "uuid";
 import Logger from "../Configs/Logger";
 import { COOKIE_NAME } from "../Constants";
+import { Auth, Authorization } from "../Middlewares/Auth.middleware";
 import { User, UserModel } from "../Models";
 import { TokenModel } from "../Models/Token";
 import ChangePasswordInput from "../Types/ChangePasswordInput";
 import { Context } from "../Types/Context";
+import CreateUserInput from "../Types/CreateUserInput";
 import ForgotPasswordInput from "../Types/ForgotPasswordInput";
 import { LoginInput } from "../Types/LoginInput";
 import { RegisterInput } from "../Types/RegisterInput";
@@ -238,5 +247,100 @@ export class UserResolver {
         success: false,
       };
     }
+  }
+
+  //Create User
+  @UseMiddleware(Auth)
+  @UseMiddleware(Authorization)
+  @Mutation((_return) => UserMutationResponse)
+  async createUser(
+    @Arg("createUserInput") createUserInput: CreateUserInput
+  ): Promise<UserMutationResponse> {
+    const { name, username, email, password, role } = createUserInput;
+    const validateRegister = ValidateRegister(createUserInput);
+
+    if (validateRegister !== null) {
+      return {
+        code: 400,
+        success: false,
+        ...validateRegister,
+      };
+    }
+
+    try {
+      const existingUser = await UserModel.findOne({
+        $or: [{ username }, { email }],
+      });
+
+      if (existingUser)
+        return {
+          code: 400,
+          success: false,
+          message: "Duplicate username or email",
+          errors: [
+            {
+              field: existingUser.username === username ? "username" : "email",
+              message: `${
+                existingUser.username === username ? "Username" : "Email"
+              } already taken`,
+            },
+          ],
+        };
+
+      const hashPassword = md5(password);
+
+      const newUser = new UserModel({
+        ...createUserInput,
+        password: hashPassword,
+      });
+
+      return {
+        code: 201,
+        success: true,
+        message: "Create user successfully!",
+        user: await newUser.save(),
+      };
+    } catch (error: any) {
+      Logger.error(error);
+      return {
+        code: 500,
+        success: false,
+        message: `Internal server error ${error.message}`,
+      };
+    }
+  }
+
+  //Get List User
+  @UseMiddleware(Auth)
+  @UseMiddleware(Authorization)
+  @Query((_return) => [User])
+  async getListUser(): Promise<User[]> {
+    const users = await UserModel.find();
+
+    return users;
+  }
+
+  //Delete User
+  @UseMiddleware(Auth)
+  @UseMiddleware(Authorization)
+  @Mutation((_return) => UserMutationResponse)
+  async deleteUser(@Arg("id") id: string): Promise<UserMutationResponse> {
+    const existingUser = await UserModel.findById(id);
+
+    if (!existingUser) {
+      return {
+        code: 400,
+        success: false,
+        message: "Can not find any user",
+      };
+    }
+
+    await UserModel.deleteOne({ _id: id });
+
+    return {
+      code: 200,
+      success: true,
+      message: "Delete User Successfully",
+    };
   }
 }

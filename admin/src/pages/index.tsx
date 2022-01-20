@@ -1,12 +1,11 @@
-import { useRouter } from "next/router";
-
+import { useRouter } from 'next/router';
 
 const Index = () => {
-  const router = useRouter();
+    const router = useRouter();
 
-  router.replace('/app/dashboard');
+    router.replace('/app/post');
 
-  return <></>
-}
+    return <></>;
+};
 
-export default Index
+export default Index;

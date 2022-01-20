@@ -5,6 +5,7 @@ fragment postInfo on Post {
     user {
         ...userInfo
     }
+    active
     textSnippet
     createdAt
     updatedAt

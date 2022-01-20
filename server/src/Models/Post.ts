@@ -18,6 +18,10 @@ export class Post extends TimeStamps{
     @prop()
     content!: string;
 
+    @Field()
+    @prop({default: false})
+    active!: boolean;
+
     @Field(_type => User)
     @prop({ref: User, autopopulate: true})
     user!: Ref<User>

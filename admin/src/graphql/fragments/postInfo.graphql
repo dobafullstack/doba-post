@@ -2,6 +2,7 @@ fragment postInfo on Post {
     _id
     title
     content
+    active
     user {
         ...userInfo
     }

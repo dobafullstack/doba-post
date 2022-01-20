@@ -35,7 +35,7 @@ const Index = () => {
       ) : (
         <Stack spacing={8}>
           {data?.getListPost?.map((post) => (
-            <PostItem post={post as Post} key={post._id} />
+            post.active && <PostItem post={post as Post} key={post._id} />
           ))}
         </Stack>
       )}

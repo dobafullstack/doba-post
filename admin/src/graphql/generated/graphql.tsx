@@ -27,6 +27,14 @@ export type CreatePostInput = {
   title: Scalars['String'];
 };
 
+export type CreateUserInput = {
+  email: Scalars['String'];
+  name: Scalars['String'];
+  password: Scalars['String'];
+  role: Scalars['String'];
+  username: Scalars['String'];
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
@@ -52,7 +60,9 @@ export type Mutation = {
   __typename?: 'Mutation';
   changePassword: UserMutationResponse;
   createPost: PostMutationResponse;
+  createUser: UserMutationResponse;
   deletePost: PostMutationResponse;
+  deleteUser: UserMutationResponse;
   forgotPassword: Scalars['String'];
   login: UserMutationResponse;
   logout: Scalars['Boolean'];
@@ -71,7 +81,17 @@ export type MutationCreatePostArgs = {
 };
 
 
+export type MutationCreateUserArgs = {
+  createUserInput: CreateUserInput;
+};
+
+
 export type MutationDeletePostArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationDeleteUserArgs = {
   id: Scalars['String'];
 };
 
@@ -98,6 +118,7 @@ export type MutationUpdatePostArgs = {
 export type Post = {
   __typename?: 'Post';
   _id: Scalars['String'];
+  active: Scalars['Boolean'];
   content: Scalars['String'];
   createdAt: Scalars['DateTime'];
   textSnippet: Scalars['String'];
@@ -118,6 +139,7 @@ export type PostMutationResponse = IMutationResponse & {
 export type Query = {
   __typename?: 'Query';
   getListPost: Array<Post>;
+  getListUser: Array<User>;
   getPost?: Maybe<Post>;
   getUser?: Maybe<User>;
 };
@@ -135,6 +157,7 @@ export type RegisterInput = {
 };
 
 export type UpdatePostInput = {
+  active?: InputMaybe<Scalars['Boolean']>;
   content?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
   title?: InputMaybe<Scalars['String']>;
@@ -146,6 +169,7 @@ export type User = {
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   name: Scalars['String'];
+  role: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
 };
@@ -161,34 +185,48 @@ export type UserMutationResponse = IMutationResponse & {
 
 export type FieldErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type PostInfoFragment = { __typename?: 'Post', _id: string, title: string, content: string, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } };
+export type PostInfoFragment = { __typename?: 'Post', _id: string, title: string, content: string, active: boolean, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } };
 
-export type PostMutationResponseFragment = { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: string | null | undefined, post?: { __typename?: 'Post', _id: string, title: string, content: string, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined };
+export type PostMutationResponseFragment = { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: string | null | undefined, post?: { __typename?: 'Post', _id: string, title: string, content: string, active: boolean, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined };
 
-export type UserInfoFragment = { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any };
+export type UserInfoFragment = { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any };
 
-export type UserMutationResponseFragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined };
+export type UserMutationResponseFragment = { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined };
 
 export type ChangePasswordMutationVariables = Exact<{
   changePasswordInput: ChangePasswordInput;
 }>;
 
 
-export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserMutationResponse', success: boolean, code: number, message?: string | null | undefined, user?: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserMutationResponse', success: boolean, code: number, message?: string | null | undefined, user?: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type CreatePostMutationVariables = Exact<{
   createPostInput: CreatePostInput;
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: string | null | undefined, post?: { __typename?: 'Post', _id: string, title: string, content: string, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: string | null | undefined, post?: { __typename?: 'Post', _id: string, title: string, content: string, active: boolean, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
+
+export type CreateUserMutationVariables = Exact<{
+  createUserInput: CreateUserInput;
+}>;
+
+
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type DeletePostMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type DeletePostMutation = { __typename?: 'Mutation', deletePost: { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: string | null | undefined, post?: { __typename?: 'Post', _id: string, title: string, content: string, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
+export type DeletePostMutation = { __typename?: 'Mutation', deletePost: { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: string | null | undefined, post?: { __typename?: 'Post', _id: string, title: string, content: string, active: boolean, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
+
+export type DeleteUserMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   forgotPasswordInput: ForgotPasswordInput;
@@ -202,7 +240,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -214,37 +252,43 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null | undefined, user?: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type UpdatePostMutationVariables = Exact<{
   updatePostInput: UpdatePostInput;
 }>;
 
 
-export type UpdatePostMutation = { __typename?: 'Mutation', updatePost: { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: string | null | undefined, post?: { __typename?: 'Post', _id: string, title: string, content: string, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
+export type UpdatePostMutation = { __typename?: 'Mutation', updatePost: { __typename?: 'PostMutationResponse', code: number, success: boolean, message?: string | null | undefined, post?: { __typename?: 'Post', _id: string, title: string, content: string, active: boolean, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
+
+export type GetListUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetListUserQuery = { __typename?: 'Query', getListUser: Array<{ __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any }> };
 
 export type GetPostQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetPostQuery = { __typename?: 'Query', getPost?: { __typename?: 'Post', _id: string, title: string, content: string, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } } | null | undefined };
+export type GetPostQuery = { __typename?: 'Query', getPost?: { __typename?: 'Post', _id: string, title: string, content: string, active: boolean, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } } | null | undefined };
 
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } | null | undefined };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } | null | undefined };
 
 export type GetListPostQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetListPostQuery = { __typename?: 'Query', getListPost: Array<{ __typename?: 'Post', _id: string, title: string, content: string, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, createdAt: any, updatedAt: any } }> };
+export type GetListPostQuery = { __typename?: 'Query', getListPost: Array<{ __typename?: 'Post', _id: string, title: string, content: string, active: boolean, textSnippet: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', _id: string, username: string, email: string, role: string, createdAt: any, updatedAt: any } }> };
 
 export const UserInfoFragmentDoc = gql`
     fragment userInfo on User {
   _id
   username
   email
+  role
   createdAt
   updatedAt
 }
@@ -254,6 +298,7 @@ export const PostInfoFragmentDoc = gql`
   _id
   title
   content
+  active
   user {
     ...userInfo
   }
@@ -371,6 +416,39 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const CreateUserDocument = gql`
+    mutation CreateUser($createUserInput: CreateUserInput!) {
+  createUser(createUserInput: $createUserInput) {
+    ...userMutationResponse
+  }
+}
+    ${UserMutationResponseFragmentDoc}`;
+export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      createUserInput: // value for 'createUserInput'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
+      }
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
 export const DeletePostDocument = gql`
     mutation deletePost($id: String!) {
   deletePost(id: $id) {
@@ -404,6 +482,41 @@ export function useDeletePostMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeletePostMutationHookResult = ReturnType<typeof useDeletePostMutation>;
 export type DeletePostMutationResult = Apollo.MutationResult<DeletePostMutation>;
 export type DeletePostMutationOptions = Apollo.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
+export const DeleteUserDocument = gql`
+    mutation DeleteUser($id: String!) {
+  deleteUser(id: $id) {
+    code
+    success
+    message
+  }
+}
+    `;
+export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
+
+/**
+ * __useDeleteUserMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserMutation, DeleteUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, options);
+      }
+export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
+export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
+export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
 export const ForgotPasswordDocument = gql`
     mutation forgotPassword($forgotPasswordInput: ForgotPasswordInput!) {
   forgotPassword(forgotPasswordInput: $forgotPasswordInput)
@@ -564,6 +677,40 @@ export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
 export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
 export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
+export const GetListUserDocument = gql`
+    query GetListUser {
+  getListUser {
+    ...userInfo
+  }
+}
+    ${UserInfoFragmentDoc}`;
+
+/**
+ * __useGetListUserQuery__
+ *
+ * To run a query within a React component, call `useGetListUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetListUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetListUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetListUserQuery(baseOptions?: Apollo.QueryHookOptions<GetListUserQuery, GetListUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetListUserQuery, GetListUserQueryVariables>(GetListUserDocument, options);
+      }
+export function useGetListUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetListUserQuery, GetListUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetListUserQuery, GetListUserQueryVariables>(GetListUserDocument, options);
+        }
+export type GetListUserQueryHookResult = ReturnType<typeof useGetListUserQuery>;
+export type GetListUserLazyQueryHookResult = ReturnType<typeof useGetListUserLazyQuery>;
+export type GetListUserQueryResult = Apollo.QueryResult<GetListUserQuery, GetListUserQueryVariables>;
 export const GetPostDocument = gql`
     query GetPost($id: String!) {
   getPost(id: $id) {

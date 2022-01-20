@@ -1,24 +1,16 @@
+import { DeleteIcon } from '@chakra-ui/icons';
 import {
-    Flex,
-    Icon,
-    LinkBox,
-    LinkOverlay,
-    Skeleton,
-    Text,
-    Link as CLink,
-    useDisclosure,
-    Badge,
+    Badge, Flex,
+    Icon, Skeleton,
+    Text, useDisclosure
 } from '@chakra-ui/react';
 import React, { ReactElement } from 'react';
-import { Post } from '../../graphql/generated/graphql';
+import { User } from '../../graphql/generated/graphql';
 import formatDate from '../../helpers/formatDate';
-import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
-import Link from 'next/link';
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import DeletePostModal from './DeletePostModal';
+import DeleteUserModal from './DeleteUserModal';
 
 interface Props {
-    item: Post;
+    item: User;
     loading: boolean;
 }
 
@@ -40,12 +32,11 @@ export default function ListItem({ item, loading }: Props): ReactElement {
                     px={10}
                     transition="all 0.5s"
                 >
-                    <Link href={`/app/post/${item._id}`}>
-                        <CLink minW="400px" maxW="400px">
-                            {item.title}
-                        </CLink>
-                    </Link>
-                    <Badge bgColor={item.active ? "green.500" : "red.500"} color="white">{item.active ? 'Đã duyệt' : 'Chưa Duyệt'}</Badge>
+                    <Text>{item.username}</Text>
+                    <Text>{item.email}</Text>
+                    <Badge bgColor={item.role === 'admin' ? 'green.500' : 'blue.500'} color="white">
+                        {item.role === 'admin' ? 'Admin' : 'Client'}
+                    </Badge>
                     <Text>{formatDate(item.createdAt)}</Text>
                     <Icon
                         as={DeleteIcon}
@@ -56,7 +47,7 @@ export default function ListItem({ item, loading }: Props): ReactElement {
                     />
                 </Flex>
             </Skeleton>
-            <DeletePostModal selectedPostId={item._id} isOpen={isOpen} onClose={onClose} />
+            <DeleteUserModal selectedUserId={item._id} isOpen={isOpen} onClose={onClose} />
         </>
     );
 }

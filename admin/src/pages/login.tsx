@@ -1,6 +1,5 @@
-import { Button, Flex, Link, Text, useToast } from '@chakra-ui/react';
+import { Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { Form, Formik, FormikHelpers } from 'formik';
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import * as yup from 'yup';
@@ -9,7 +8,7 @@ import {
     GetUserDocument,
     GetUserQuery,
     LoginInput,
-    useLoginMutation,
+    useLoginMutation
 } from '../graphql/generated/graphql';
 import { mapFieldError } from '../helpers/mapFieldError';
 import UserLayout from '../Layout/UserLayout';
@@ -52,16 +51,23 @@ export default function Login({}: Props): ReactElement {
         }
 
         if (response.data?.login.success) {
-            console.log('success');
+            if (response.data.login.user.role !== 'admin') {
+                toast({
+                    title: 'Login Failed',
+                    description: 'You do not have permission to access this',
+                    status: 'error',
+                    isClosable: true,
+                });
+            } else {
+                toast({
+                    title: 'Welcome',
+                    description: response.data.login.user?.username,
+                    status: 'success',
+                    isClosable: true,
+                });
 
-            toast({
-                title: 'Welcome',
-                description: response.data.login.user?.username,
-                status: 'success',
-                isClosable: true,
-            });
-
-            router.push('/');
+                router.push('/');
+            }
         }
     };
 
@@ -89,11 +95,6 @@ export default function Login({}: Props): ReactElement {
                             type="password"
                             label="Password"
                         />
-                        <Flex justify="flex-end">
-                            <NextLink href="/forgot-password" passHref>
-                                <Link>Forgot password?</Link>
-                            </NextLink>
-                        </Flex>
                         <Flex justify="center">
                             <Button
                                 type="submit"

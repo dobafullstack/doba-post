@@ -34,7 +34,7 @@ const Navbar = () => {
         );
     } else {
         body = (
-            <Button onClick={() => handleLogout()} isLoading={useLogoutLoading}>
+            <Button bg="red.500" _hover={{bg: "red.600"}} onClick={() => handleLogout()} isLoading={useLogoutLoading}>
                 Logout
             </Button>
         );

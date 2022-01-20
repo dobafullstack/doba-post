@@ -17,10 +17,10 @@ export default function Navbar({}: Props): ReactElement {
     const handleLogout = async () => {
         const response = await logout();
 
-        if (response.data.logout){
-            router.replace('/login')
+        if (response.data.logout) {
+            router.replace('/login');
         }
-    }
+    };
 
     return (
         <Box width="100%" px="100px" color="primary.200" fontSize="2rem" shadow="lg">
@@ -40,16 +40,10 @@ export default function Navbar({}: Props): ReactElement {
                             bg="white"
                             rounded="md"
                             shadow="lg"
-                            bottom="-100px"
+                            bottom="-60px"
                             right="-20px"
                             fontSize="1.2rem"
                         >
-                            <Flex align="center" gap={1} justify="flex-start">
-                                <Icon as={BiUserCircle} />
-                                <NextLink href="/app/profile" passHref>
-                                    <Link>My Profile</Link>
-                                </NextLink>
-                            </Flex>
                             <Flex align="center" gap={1} justify="flex-start">
                                 <Icon as={AiOutlineLogout} />
                                 <Text cursor="pointer" onClick={() => handleLogout()}>

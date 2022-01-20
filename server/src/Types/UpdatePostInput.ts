@@ -11,4 +11,7 @@ export class UpdatePostInput{
 
     @Field({nullable: true})
     title?: string;
+
+    @Field({nullable: true})
+    active?: boolean;
 }

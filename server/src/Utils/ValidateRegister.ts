@@ -1,7 +1,8 @@
+import CreateUserInput from "../Types/CreateUserInput";
 import { RegisterInput } from "../Types/RegisterInput";
 
 
-export const ValidateRegister = (registerInput: RegisterInput) => {
+export const ValidateRegister = (registerInput: RegisterInput | CreateUserInput) => {
     //Email
     if (!registerInput.email.includes("@"))
         return {

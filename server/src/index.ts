@@ -2,7 +2,6 @@ require("dotenv").config();
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
 import MongoStore from "connect-mongo";
-import cors from "cors";
 import express from "express";
 import session from "express-session";
 import mongoose from "mongoose";
@@ -17,13 +16,6 @@ const main = async () => {
   const app = express();
   const PORT = process.env.PORT || 4000;
 
-  app.use(
-    cors({
-      origin: "http://localhost:3000",
-      credentials: true,
-    })
-  );
-  
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, PostResolver],
@@ -56,7 +48,13 @@ const main = async () => {
 
   await apolloServer.start();
 
-  apolloServer.applyMiddleware({ app, cors: false });
+  apolloServer.applyMiddleware({
+    app,
+    cors: {
+      credentials: true,
+      origin: true,
+    },
+  });
 
   app.listen(PORT, () => {
     Logger.success(

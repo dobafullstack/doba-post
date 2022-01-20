@@ -4,7 +4,6 @@ import '@fontsource/quicksand';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import React, { ReactElement, ReactNode } from 'react';
-import { Provider } from 'react-redux';
 import { ToastProvider } from 'react-toast-notifications';
 import '../assets/css/loading.css';
 import { useApollo } from '../graphql/apolloClient';
